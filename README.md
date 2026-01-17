@@ -54,34 +54,25 @@ DB_PASSWORD=password
 
 ### 3. Inicialização do Ambiente
 
-Com o Docker instalado, execute os comandos abaixo para instalar as dependências e subir os containers.
+Com o Docker instalado, execute os comandos abaixo para subir os containers, instalar as dependências e preparar o banco de dados.
 
 ```bash
-# Instalar dependências do PHP via Composer
-composer install
+# Iniciar os containers do Docker em segundo plano
+docker-compose up -d
 
-# Iniciar os containers do Docker (em segundo plano)
-./vendor/bin/sail up -d
+# Instalar as dependências do PHP via Composer dentro do container
+docker compose exec -it laravel.test composer install
 
-# Instalar e compilar os assets do front-end
+# Gerar a chave única de criptografia da aplicação
+./vendor/bin/sail artisan key:generate
+
+# Executar as migrações e popular o banco com dados iniciais (seed)
+./vendor/bin/sail artisan migrate --seed
+
+# Instalar as dependências do Node.js e compilar os assets do front-end
 ./vendor/bin/sail npm install
 ./vendor/bin/sail npm run build
-
-# Gerar a chave única da aplicação
-./vendor/bin/sail artisan key:generate
 ```
-
----
-
-## 📊 Populando o Banco de Dados
-
-Para que você possa testar a busca imediatamente, o projeto inclui **Migrations** (que criam as tabelas) e **Seeders** (que inserem dados fictícios de categorias, marcas e produtos).
-
-```bash
-./vendor/bin/sail artisan migrate --seed
-```
-
-> **Nota:** Após este comando, o sistema estará pronto para uso com uma base de dados populada.
 
 ---
 
@@ -90,6 +81,7 @@ Para que você possa testar a busca imediatamente, o projeto inclui **Migrations
 A qualidade do código é garantida através de testes automatizados utilizando o **Pest**, uma ferramenta de testes focada em simplicidade e legibilidade.
 
 ```bash
+# Executar a suíte de testes
 ./vendor/bin/sail pest
 ```
 
