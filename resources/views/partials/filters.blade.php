@@ -2,7 +2,7 @@
     <div>
         <h2 class="text-sm font-semibold text-slate-700">Nome do produto</h2>
         <input
-            type="text"
+            type="search"
             class="mt-2 w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-slate-500 focus:outline-none"
             placeholder="Buscar por nome"
             wire:model.live.debounce.300ms="search"
@@ -43,6 +43,7 @@
                         wire:model.live="categorySlugs"
                     />
                     <span>{{ $category->name }}</span>
+                    <span class="text-xs text-slate-500">({{ $category->products_count }})</span>
                 </label>
             @empty
                 <p class="text-sm text-slate-500">Nenhuma categoria disponível.</p>
@@ -78,6 +79,7 @@
                         wire:model.live="brandSlugs"
                     />
                     <span>{{ $brand->name }}</span>
+                    <span class="text-xs text-slate-500">({{ $brand->products_count }})</span>
                 </label>
             @empty
                 <p class="text-sm text-slate-500">Nenhuma marca disponível.</p>

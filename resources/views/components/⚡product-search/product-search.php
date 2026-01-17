@@ -79,7 +79,18 @@ new class extends Component {
      */
     private function categories(): Collection
     {
+        $search = trim($this->search);
+        $brandSlugs = array_values(array_filter($this->brandSlugs, 'strlen'));
+
         return Category::query()
+            ->withCount(['products' => function ($query) use ($search, $brandSlugs) {
+                $query->when($search !== '', function ($query) use ($search) {
+                    $query->where('name', 'ilike', '%' . $search . '%');
+                })
+                    ->when($brandSlugs !== [], function ($query) use ($brandSlugs) {
+                        $query->whereIn('brand_id', Brand::query()->whereIn('slug', $brandSlugs)->select('id'));
+                    });
+            }])
             ->orderBy('name')
             ->get();
     }
@@ -89,7 +100,18 @@ new class extends Component {
      */
     private function brands(): Collection
     {
+        $search = trim($this->search);
+        $categorySlugs = array_values(array_filter($this->categorySlugs, 'strlen'));
+
         return Brand::query()
+            ->withCount(['products' => function ($query) use ($search, $categorySlugs) {
+                $query->when($search !== '', function ($query) use ($search) {
+                    $query->where('name', 'ilike', '%' . $search . '%');
+                })
+                    ->when($categorySlugs !== [], function ($query) use ($categorySlugs) {
+                        $query->whereIn('category_id', Category::query()->whereIn('slug', $categorySlugs)->select('id'));
+                    });
+            }])
             ->orderBy('name')
             ->get();
     }
