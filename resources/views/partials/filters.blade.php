@@ -35,11 +35,12 @@
         </div>
         <div class="mt-3 space-y-2">
             @forelse ($categories as $category)
-                <label class="flex items-center gap-2 text-sm text-slate-600">
+                <label class="flex cursor-pointer items-center gap-2 text-sm text-slate-600">
                     <input
                         type="checkbox"
+                        id="category-{{ $category->slug }}"
                         value="{{ $category->slug }}"
-                        class="rounded border-slate-300 text-slate-900 focus:ring-slate-500"
+                        class="cursor-pointer rounded border-slate-300 text-slate-900 focus:ring-slate-500"
                         wire:model.live="categorySlugs"
                     />
                     <span>{{ $category->name }}</span>
@@ -71,11 +72,12 @@
         </div>
         <div class="mt-3 space-y-2">
             @forelse ($brands as $brand)
-                <label class="flex items-center gap-2 text-sm text-slate-600">
+                <label class="flex cursor-pointer items-center gap-2 text-sm text-slate-600">
                     <input
                         type="checkbox"
+                        id="brand-{{ $brand->slug }}"
                         value="{{ $brand->slug }}"
-                        class="rounded border-slate-300 text-slate-900 focus:ring-slate-500"
+                        class="cursor-pointer rounded border-slate-300 text-slate-900 focus:ring-slate-500"
                         wire:model.live="brandSlugs"
                     />
                     <span>{{ $brand->name }}</span>
