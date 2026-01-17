@@ -16,7 +16,23 @@
     </div>
 
     <div>
-        <h2 class="text-sm font-semibold text-slate-700">Categorias</h2>
+        <div class="flex items-center justify-between">
+            <h2 class="text-sm font-semibold text-slate-700">
+                Categorias
+                @if (! empty($categorySlugs))
+                    <span class="text-xs font-medium text-slate-500">({{ count($categorySlugs) }})</span>
+                @endif
+            </h2>
+            @if (! empty($categorySlugs) && empty($brandSlugs))
+                <button
+                    type="button"
+                    class="cursor-pointer text-xs font-semibold text-slate-500 hover:text-slate-700"
+                    wire:click="clearCategories"
+                >
+                    Limpar
+                </button>
+            @endif
+        </div>
         <div class="mt-3 space-y-2">
             @forelse ($categories as $category)
                 <label class="flex items-center gap-2 text-sm text-slate-600">
@@ -35,7 +51,23 @@
     </div>
 
     <div>
-        <h2 class="text-sm font-semibold text-slate-700">Marcas</h2>
+        <div class="flex items-center justify-between">
+            <h2 class="text-sm font-semibold text-slate-700">
+                Marcas
+                @if (! empty($brandSlugs))
+                    <span class="text-xs font-medium text-slate-500">({{ count($brandSlugs) }})</span>
+                @endif
+            </h2>
+            @if (! empty($brandSlugs) && empty($categorySlugs))
+                <button
+                    type="button"
+                    class="cursor-pointer text-xs font-semibold text-slate-500 hover:text-slate-700"
+                    wire:click="clearBrands"
+                >
+                    Limpar
+                </button>
+            @endif
+        </div>
         <div class="mt-3 space-y-2">
             @forelse ($brands as $brand)
                 <label class="flex items-center gap-2 text-sm text-slate-600">

@@ -43,6 +43,18 @@ new class extends Component {
         $this->resetPage();
     }
 
+    public function clearCategories(): void
+    {
+        $this->reset('categoriesQuery', 'categorySlugs');
+        $this->resetPage();
+    }
+
+    public function clearBrands(): void
+    {
+        $this->reset('brandsQuery', 'brandSlugs');
+        $this->resetPage();
+    }
+
     public function hasActiveFilters(): bool
     {
         return $this->search !== ''
@@ -97,13 +109,13 @@ new class extends Component {
 
         return Product::query()
             ->with(['category', 'brand'])
-            ->when($search !== '', function($query) use ($search) {
+            ->when($search !== '', function ($query) use ($search) {
                 $query->where('name', 'ilike', '%' . $search . '%');
             })
-            ->when($categorySlugs !== [], function($query) use ($categorySlugs) {
+            ->when($categorySlugs !== [], function ($query) use ($categorySlugs) {
                 $query->whereIn('category_id', Category::query()->whereIn('slug', $categorySlugs)->select('id'));
             })
-            ->when($brandSlugs !== [], function($query) use ($brandSlugs) {
+            ->when($brandSlugs !== [], function ($query) use ($brandSlugs) {
                 $query->whereIn('brand_id', Brand::query()->whereIn('slug', $brandSlugs)->select('id'));
             })
             ->orderBy('name')
@@ -125,10 +137,10 @@ new class extends Component {
 
         return Product::query()
             ->where('name', 'ilike', '%' . $search . '%')
-            ->when($categorySlugs !== [], function($query) use ($categorySlugs) {
+            ->when($categorySlugs !== [], function ($query) use ($categorySlugs) {
                 $query->whereIn('category_id', Category::query()->whereIn('slug', $categorySlugs)->select('id'));
             })
-            ->when($brandSlugs !== [], function($query) use ($brandSlugs) {
+            ->when($brandSlugs !== [], function ($query) use ($brandSlugs) {
                 $query->whereIn('brand_id', Brand::query()->whereIn('slug', $brandSlugs)->select('id'));
             })
             ->orderBy('name')
